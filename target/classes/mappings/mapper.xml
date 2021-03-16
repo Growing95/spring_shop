@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop">
+	<select id="list" parameterType="String" resultType="vo">
+		select * from shop_t where category = #{category}
+	</select>
+	<select id="login" parameterType="mvo" resultType="mvo">
+		select*from members where id=#{id} and pw=#{pw}
+	</select>
+	<select id="onelist" parameterType="String" resultType="vo">
+		select*from shop_t where idx=#{idx}
+	</select>
+	<insert id="product_add" parameterType="vo">
+		insert into shop_t values(shop_seq.nextval,#{category},#{p_num},#{p_name},
+		#{p_company},#{p_price},#{p_saleprice},#{p_image_s},
+		#{p_image_l},#{p_content},sysdate)
+	</insert>
+	<select id="selectcart" parameterType="Map" resultType="cvo">
+		select * from cart where id=#{id} and p_num=#{p_num}
+	</select>
+	<insert id="cartInsert" parameterType="cvo">
+		insert into cart values(cart_seq.nextval,#{p_num},#{p_name},#{p_price},#{p_saleprice},#{amount},#{id})
+	</insert>
+	<update id="cartUpdate" parameterType="cvo">
+		update cart set amount = amount + 1  where id=#{id} and p_num=#{p_num} 		
+	</update>
+	<select id="cartAll" parameterType="String" resultType="cvo">
+		select * from cart where id=#{id}
+	</select>
+	<update id="cartAmountUpdate" parameterType="cvo">
+		update cart set amount = #{amount}  where id=#{id} and p_num=#{p_num} 		
+	</update>
+	<delete id="cartDelete" parameterType="cvo">
+		delete from cart where id=#{id} and p_num=#{p_num}
+	</delete>
+	
+</mapper>
